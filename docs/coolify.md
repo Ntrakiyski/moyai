@@ -29,6 +29,7 @@ Browser → Coolify (Traefik + TLS) → Moyai container on your VPS
 6. Leave the Docker **Command / Entrypoint** empty so `docker_start.py` prepares `/data` and drops to UID `10001`.
 7. Health check path: `/health` (compose also defines a container healthcheck).
 8. Attach the named volume `moyai-data` at `/data` (compose already declares it).
+9. Under **Environment Variables**, set at least `PUBLIC_URL` and `WORKSPACE_PASSWORD` (compose maps them into the container). Without both, remote requests return `Local preview only`.
 
 ### Alternative: Dockerfile only
 

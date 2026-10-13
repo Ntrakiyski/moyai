@@ -1,6 +1,7 @@
 # Coolify Docker Compose deploy for the Moyai control plane.
 #
 # In Coolify: Build Pack = Docker Compose, Compose Location = /compose.coolify.yaml
+# Set the variables below in Coolify → Environment Variables, then redeploy.
 # Keep replicas = 1 (SQLite single-writer). Do not override the image entrypoint.
 #
 # Agent sandboxes still run on Modal / Substrate / Lambda — not inside this container.
@@ -13,8 +14,24 @@ services:
     environment:
       DATA_DIR: /data
       PORT: "8787"
-      # Coolify / Traefik sits in front; sandboxes and clients hit PUBLIC_URL over HTTPS.
       TRUSTED_PROXY_HOPS: "1"
+      # Required — without these the app stays in local-preview mode and blocks remote access.
+      PUBLIC_URL: ${PUBLIC_URL}
+      WORKSPACE_PASSWORD: ${WORKSPACE_PASSWORD}
+      PASSWORD_LOGIN_ENABLED: ${PASSWORD_LOGIN_ENABLED:-true}
+      SESSION_SECRET: ${SESSION_SECRET:-}
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY:-}
+      ORGANIZATION_NAME: ${ORGANIZATION_NAME:-Internal team}
+      # Models / sandboxes (Cloud sessions)
+      LITELLM_API_BASE: ${LITELLM_API_BASE:-}
+      LITELLM_API_KEY: ${LITELLM_API_KEY:-}
+      AGENT_MODEL: ${AGENT_MODEL:-}
+      TEMPORAL_ENABLED: ${TEMPORAL_ENABLED:-false}
+      AGENT_HARNESS: ${AGENT_HARNESS:-hermes}
+      SESSION_TITLES_ENABLED: ${SESSION_TITLES_ENABLED:-false}
+      SANDBOX_PROVIDER: ${SANDBOX_PROVIDER:-modal}
+      MODAL_TOKEN_ID: ${MODAL_TOKEN_ID:-}
+      MODAL_TOKEN_SECRET: ${MODAL_TOKEN_SECRET:-}
     ports:
       - "8787:8787"
     volumes:
