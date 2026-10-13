@@ -1,0 +1,32 @@
+# Coolify Docker Compose deploy for the Moyai control plane.
+#
+# In Coolify: Build Pack = Docker Compose, Compose Location = /compose.coolify.yaml
+# Keep replicas = 1 (SQLite single-writer). Do not override the image entrypoint.
+#
+# Agent sandboxes still run on Modal / Substrate / Lambda — not inside this container.
+# See docs/coolify.md.
+
+services:
+  moyai:
+    build: .
+    init: true
+    environment:
+      DATA_DIR: /data
+      PORT: "8787"
+      # Coolify / Traefik sits in front; sandboxes and clients hit PUBLIC_URL over HTTPS.
+      TRUSTED_PROXY_HOPS: "1"
+    ports:
+      - "8787:8787"
+    volumes:
+      - moyai-data:/data
+    restart: unless-stopped
+    stop_grace_period: 90s
+    healthcheck:
+      test: ["CMD", "/app/.venv/bin/python", "/app/docker_healthcheck.py"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  moyai-data:

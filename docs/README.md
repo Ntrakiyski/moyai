@@ -22,6 +22,7 @@ Follow the [installation walkthrough](getting-started.md) to deploy Moyai on Mod
 | --- | --- |
 | [Install and run a real task](getting-started.md) | Account setup, credentials, Modal deployment, first task, GitHub, and troubleshooting |
 | [Cloud setup and deployment](deployment.md) | Modal or Substrate sandboxes, Render, Docker, migration, and backups |
+| [Coolify (VPS)](coolify.md) | Host the control plane on Coolify with Modal/Substrate sandboxes |
 | [PostgreSQL migration rehearsal](postgres-migration.md) | Verified database copies and the path toward overlapping deployments |
 | [Postgres runtime](postgres-runtime.md) | Application storage, ownership, verification, and cutover prerequisites |
 | [Independent agent runtime](independent-runtime.md) | Opt-in responses before computer acquisition, qualification and recovery |
