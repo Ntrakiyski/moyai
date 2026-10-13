@@ -28,8 +28,9 @@ Browser → Coolify (Traefik + TLS) → Moyai container on your VPS
 5. Keep **one instance** only (SQLite single-writer). Do not scale replicas.
 6. Leave the Docker **Command / Entrypoint** empty so `docker_start.py` prepares `/data` and drops to UID `10001`.
 7. Health check path: `/health` (compose also defines a container healthcheck).
-8. Attach the named volume `moyai-data` at `/data` (compose already declares it).
+8. Attach the named volume at `/data` (compose declares `moyai-data-v2`).
 9. Under **Environment Variables**, set at least `PUBLIC_URL` and `WORKSPACE_PASSWORD` (compose maps them into the container). Without both, remote requests return `Local preview only`.
+10. If startup crashes with `cryptography.fernet.InvalidToken`, the volume was encrypted with a different `ENCRYPTION_KEY`. Bump the compose volume name (or delete the Docker volume on the VPS), keep one stable `ENCRYPTION_KEY`, and redeploy.
 
 ### Alternative: Dockerfile only
 

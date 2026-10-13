@@ -36,7 +36,10 @@ services:
     ports:
       - "8787:8787"
     volumes:
-      - moyai-data:/data
+      # Bump the volume name when ENCRYPTION_KEY and an old DB disagree (InvalidToken
+      # crash loop). Coolify cannot wipe compose volumes from the UI; a new name
+      # mounts an empty /data. Keep ENCRYPTION_KEY stable after this.
+      - moyai-data-v2:/data
     restart: unless-stopped
     stop_grace_period: 90s
     healthcheck:
@@ -47,4 +50,4 @@ services:
       start_period: 40s
 
 volumes:
-  moyai-data:
+  moyai-data-v2:
